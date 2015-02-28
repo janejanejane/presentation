@@ -13,19 +13,36 @@ colorsApp.controller('ColorController', function ($scope) {
         scope: {
             color: '='
         },
-        link: function (scope, element, attrs, ShareCtrl) {
-            scope.$watch(scope.color, function (newVal, oldVal) {
-                scope.displayNum();
-            });
-            scope.displayNum = function(){
-                console.log('this scope', scope.color, attrs, element.val);
-            };
+        link: function (scope, element, attrs) {
+            // scope.displayNum = function(){
+            //     console.log('this scope', scope.color);
+            // };
         },
         transclude: true,
         template:
             '<div> \
-                <input type="range" min="0" max="100" step="10" value="{{scope.color}}" ng-model=scope.color ng-change="displayNum()" /> \
+                <input type="range" min="0" max="255" value="{{scope.color}}" ng-model=scope.color ng-change="displayNum()" /> \
                 <input type="text" value="{{scope.color}}" ng-model=scope.color /> \
             </div>'
+    };
+}).directive('colorSquare', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            color: '='
+        },
+        link: function (scope, element, attrs) {
+            //Make an SVG Container
+            var svgContainer = d3.select("#squares").append("svg")
+                                .attr("width", 100)
+                                .attr("height", 100);
+             //Draw the Rectangle
+            var rectangle = svgContainer.append("rect")
+                            .attr("x", 50)
+                            .attr("y", 0)
+                            .attr("width", 30)
+                            .attr("height", 30)
+                            .attr("fill", "{{scope.color.name}}");
+        }
     };
 });
