@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script type="text/javascript">
+            function TaskCtrl($scope) {
+                $scope.tasks = [
+                    {text:'learn angular'},
+                    {text:'build an angular app'}
+                ];
+
+                $scope.addTask = function() {
+                    $scope.tasks.push({text:$scope.taskText});
+                    $scope.taskText = '';
+                };
+            }
+        </script>
+    </head>
+
+    <body>
+        <div ng-app>
+            <div ng-controller="TaskCtrl">
+                <ul>
+                  <li ng-repeat="task in tasks">
+                    <span>{{task.text}}</span>
+                  </li>
+                </ul>
+                <form>
+                  <input type="text" ng-model="taskText" placeholder="add new task here">
+                  <input type="submit" value="add" ng-click="addTask()">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
