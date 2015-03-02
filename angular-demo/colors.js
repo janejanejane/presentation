@@ -7,22 +7,38 @@ colorsApp.controller('ColorController', function ($scope) {
         {name:'blue', amount: 69}
     ];
 
+    $scope.setColor = function(){
+        console.log('this is color>>>', color);
+    };
+
+    $scope.$watch($scope.colors, function(newVal, oldVal){
+        console.log(newVal, oldVal);
+    });
 }).directive('colorData', function(){
     return {
         restrict: 'E',
         scope: {
-            color: '='
+            color: '=',
+            changeColor: '&'
         },
         link: function (scope, element, attrs) {
-            // scope.displayNum = function(){
-            //     console.log('this scope', scope.color);
-            // };
+            scope.$watch(scope.color, function(newVal, oldVal){
+                console.log(newVal);
+            });
+
+            var input;
+            scope.change = function(color){
+                input = element.find('#txt-field').val();
+                console.log('triggered!', color, input);
+                scope.changeColor(color);
+            };
         },
         transclude: true,
         template:
             '<div> \
-                <input type="range" min="0" max="255" value="{{scope.color}}" ng-model=scope.color ng-change="displayNum()" /> \
-                <input type="text" value="{{scope.color}}" ng-model=scope.color /> \
+                <input type="range" value={{color.amount}} ng-model="color.amount" /> \
+                <input type="text" value={{color.amount}} ng-model="color.amount" id="txt-field" /> \
+                <input type="submit" value="change color" ng-click="change(color)"> \
             </div>'
     };
 }).directive('colorSquare', function(){
@@ -32,17 +48,20 @@ colorsApp.controller('ColorController', function ($scope) {
             color: '='
         },
         link: function (scope, element, attrs) {
-            //Make an SVG Container
-            var svgContainer = d3.select("#squares").append("svg")
-                                .attr("width", 100)
-                                .attr("height", 100);
-             //Draw the Rectangle
-            var rectangle = svgContainer.append("rect")
-                            .attr("x", 50)
-                            .attr("y", 0)
-                            .attr("width", 30)
-                            .attr("height", 30)
-                            .attr("fill", "{{scope.color.name}}");
+            scope.$watch(scope.color, function(newVal, oldVal){
+                console.log('newVal', newVal, oldVal);
+                //Make an SVG Container
+                var svgContainer = d3.select("#squares").append("svg")
+                                    .attr("width", 100)
+                                    .attr("height", 100);
+                 //Draw the Rectangle
+                var rectangle = svgContainer.append("rect")
+                                .attr("x", 50)
+                                .attr("y", 0)
+                                .attr("width", 30)
+                                .attr("height", 30)
+                                .attr("fill", "{{color.name}}");
+            });
         }
     };
 });
