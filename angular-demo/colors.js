@@ -29,22 +29,26 @@ colorsApp.controller('ColorController', function ($scope) {
         scope: {
             color: '='
         },
-        link: function (scope, element, attrs) {
-            scope.$watch('color.amount', function(newVal, oldVal){
-                console.log(scope.color);
-                console.log('newVal', newVal, oldVal);
-                //Make an SVG Container
-                var svgContainer = d3.select("#squares").append("svg")
+        link: function(scope, element, attrs) {
+            // create container
+            var svgContainer = d3.select("#squares").append("svg")
                                     .attr("width", 100)
                                     .attr("height", 100);
-                 //Draw the Rectangle
-                var rectangle = svgContainer.append("rect")
-                                .attr("x", 50)
-                                .attr("y", 0)
-                                .attr("width", 30)
-                                .attr("height", 30)
-                                .attr("fill", scope.color.name)
-                                .attr("fill-opacity", scope.color.amount);
+            // draw rectangle
+            var rect = svgContainer.append("rect")
+                                    .attr("x", 50)
+                                    .attr("y", 0)
+                                    .attr("width", 30)
+                                    .attr("height", 30)
+                                    .attr("fill", "#000000");
+            scope.$watch('color.amount', function(newVal, oldVal) {
+            // update rectangle
+                rect.attr("x", 50)
+                    .attr("y", 0)
+                    .attr("width", 30)
+                    .attr("height", 30)
+                    .attr("fill", scope.color.name)
+                    .attr("fill-opacity", scope.color.amount);
             });
         },
         template:
