@@ -2,18 +2,10 @@ var colorsApp = angular.module('colorsApp', []);
 
 colorsApp.controller('ColorController', function ($scope) {
     $scope.colors = [
-        {name:'red', amount: 30},
-        {name:'green', amount: 50},
-        {name:'blue', amount: 69}
+        {name:'red', amount: 0},
+        {name:'green', amount: 0.3},
+        {name:'blue', amount: 0.6}
     ];
-
-    $scope.setColor = function(){
-        console.log('this is color>>>', color);
-    };
-
-    $scope.$watch($scope.colors, function(newVal, oldVal){
-        console.log(newVal, oldVal);
-    });
 }).directive('colorData', function(){
     return {
         restrict: 'E',
@@ -22,23 +14,13 @@ colorsApp.controller('ColorController', function ($scope) {
             changeColor: '&'
         },
         link: function (scope, element, attrs) {
-            scope.$watch(scope.color, function(newVal, oldVal){
-                console.log(newVal);
-            });
-
-            var input;
-            scope.change = function(color){
-                input = element.find('#txt-field').val();
-                console.log('triggered!', color, input);
-                scope.changeColor(color);
-            };
         },
         transclude: true,
         template:
             '<div> \
-                <input type="range" value={{color.amount}} ng-model="color.amount" /> \
+                <input type="range" min="0" max="1" step="0.1" value={{color.amount}} ng-model="color.amount" /> \
                 <input type="text" value={{color.amount}} ng-model="color.amount" id="txt-field" /> \
-                <input type="submit" value="change color" ng-click="change(color)"> \
+                <color-square color="color"></color-square> \
             </div>'
     };
 }).directive('colorSquare', function(){
@@ -48,7 +30,8 @@ colorsApp.controller('ColorController', function ($scope) {
             color: '='
         },
         link: function (scope, element, attrs) {
-            scope.$watch(scope.color, function(newVal, oldVal){
+            scope.$watch('color.amount', function(newVal, oldVal){
+                console.log(scope.color);
                 console.log('newVal', newVal, oldVal);
                 //Make an SVG Container
                 var svgContainer = d3.select("#squares").append("svg")
@@ -60,8 +43,13 @@ colorsApp.controller('ColorController', function ($scope) {
                                 .attr("y", 0)
                                 .attr("width", 30)
                                 .attr("height", 30)
-                                .attr("fill", "{{color.name}}");
+                                .attr("fill", scope.color.name)
+                                .attr("fill-opacity", scope.color.amount);
             });
-        }
+        },
+        template:
+            '<div> \
+                {{color}} \
+            </div>'
     };
 });
