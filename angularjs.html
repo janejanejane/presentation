@@ -140,6 +140,35 @@ function TaskCtrl($scope) {
                 <section>
                     <h2>DOM Extension</h2>
                     <p>Directives in Angular let you modularize the presentation layer for easy testing</p>
+                    <pre><code>
+// script
+angular.module('docsSimpleDirective', [])
+.controller('Controller', ['$scope', function($scope) {
+  $scope.customer = {
+    name: 'Naomi',
+    address: '1600 Amphitheatre'
+  };
+}])
+.directive('myCustomer', function() {
+  return {
+    template: 'Name: {{customer.name}} Address: {{customer.address}}'
+  };
+});
+
+//----------------------------------------------
+// html
+<div ng-controller="Controller">
+  <div my-customer></div>
+</div>
+
+//----------------------------------------------
+// output
+Name: Naomi Address: 1600 Amphitheatre
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Demo</h1>
                 </section>
 
                 <section>
@@ -151,16 +180,16 @@ function TaskCtrl($scope) {
                             <li>generator-cg-angular</li>
                             <li>generator-boom</li>
                             <li>generator-meanjs</li>
-                            <li>generator-ngbp</li>
                         </ul>
                         <ul class="col">
+                            <li>generator-ngbp</li>
                             <li>generator-gulp-ng</li>
                             <li>generator-klei</li>
                             <li>generator-hyper-angular</li>
                             <li>slush-angular</li>
-                            etc...
                         </ul>
                     </p>
+                    and more...
                 </section>
 
                 <section>
